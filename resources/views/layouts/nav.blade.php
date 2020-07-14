@@ -14,6 +14,26 @@
                     <li class="nav-item"><a href="{{ route('login') }}" class="nav-link">Login</a></li>
                     <li class="nav-item"><a href="{{ route('register') }}" class="nav-link">Register</a></li>
                 @else
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbar-dropdown-user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ auth()->user()->username }}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar-dropdown-user">
+                            <a href="{{ url('links') }}" class="dropdown-item"><i class="fa fa-fw fa-link"></i>&nbsp;My Links</a>
+                            <a href="{{ url('account') }}" class="dropdown-item"><i class="fa fa-fw fa-cog"></i>&nbsp;Account Settings</a>
+                            @if(auth()->user()->isAdmin())
+                                <a href="{{ url('admin') }}" class="dropdown-item"><i class="fa fa-fw fa-cogs"></i>&nbsp;Admin Panel</a>
+                            @endif
+                            <div role="separator" class="dropdown-divider"></div>
+                            <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                <i class="fa fa-fw fa-sign-out-alt"></i> Logout
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
+                    </li>
                 @endif
             </ul>
         </div>

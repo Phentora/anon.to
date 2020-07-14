@@ -21,11 +21,10 @@ The latest version of **anon.to** is fully compatible with all previous versions
  ```bash
 php artisan anonto:upgrade:db
 ```
-Edit old ```.env``` file and rename the following variables:
+Edit ```.env``` file and rename the following variables:
 - from ```API_GOOGLE_RECAPTCHA``` to ```RECAPTCHA_SECRET_KEY```
 - from ```API_GOOGLE_RECAPTCHA_CLIENT``` to ```RECAPTCHA_SITE_KEY```
-
-Refer new [```.env.example```](https://github.com/bhutanio/anon.to/blob/master/.env.example) file update accordingly
+- Refer the new [```.env.example```](https://github.com/bhutanio/anon.to/blob/master/.env.example) file and update accordingly.
 
 ### Configuration
 #### Setup Admin Account
@@ -38,6 +37,7 @@ DB::table('users')->where('id', 2)->update(['email'=>'myemail@example.com']);
 Click on **forgot password** link on the **login page** and reset password for your admin user.
 
 #### Setup Cron Job
+https://laravel.com/docs/7.x/scheduling#introduction
 ```bash
 crontab -e -u www-data
 ```
@@ -46,13 +46,14 @@ crontab -e -u www-data
 ```
 
 #### Setup Supervisor
+https://laravel.com/docs/7.x/queues#supervisor-configuration
 ```bash
 nano /etc/supervisor/conf.d/anon.conf
 ```
 ```bash
 [program:anon-queue]
 process_name=%(program_name)s_%(process_num)02d
-command=php /home/web/anon.to/artisan queue:work sqs --sleep=3 --tries=3
+command=php /home/web/anon.to/artisan queue:work --sleep=3 --tries=3
 autostart=true
 autorestart=true
 user=www-data

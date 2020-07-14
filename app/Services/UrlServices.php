@@ -3,9 +3,55 @@
 namespace App\Services;
 
 use App\Models\Link;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class UrlServices
 {
+
+    /**
+     * @param $hash
+     * @return Link
+     */
+    public function getLink($hash)
+    {
+        return Link::where('hash', $hash)->first();
+    }
+
+    public function getLinkByUrl($url)
+    {
+        $url = $this->parseUrl($url);
+
+        $link = Link::where('url_scheme', $url['scheme'])->where('url_host', $url['host']);
+
+        if (!empty($url['port'])) {
+            $link = $link->where('url_port', $url['port']);
+        } else {
+            $link = $link->whereNull('url_port');
+        }
+
+        if (!empty($url['path'])) {
+            $link = $link->where('url_path', $url['path']);
+        } else {
+            $link = $link->whereNull('url_path');
+        }
+
+        if (!empty($url['query'])) {
+            $link = $link->where('url_query', $url['query']);
+        } else {
+            $link = $link->whereNull('url_query');
+        }
+
+        if (!empty($url['fragment'])) {
+            $link = $link->where('url_fragment', $url['fragment']);
+        } else {
+            $link = $link->whereNull('url_fragment');
+        }
+
+        return $link->first();
+    }
+
     /**
      * @param $url
      * @return array
@@ -61,5 +107,67 @@ class UrlServices
         ];
 
         return $this->unParseUrl($segments);
+    }
+
+    public function saveLink($url)
+    {
+        if (!is_array($url)) {
+            $url = $this->parseUrl($url);
+        }
+
+        $hash = $this->generateHash();
+
+        $link = Link::where('hash', $hash)->first();
+        while ($link) {
+            $hash = $this->generateHash();
+            $link = Link::where('hash', $hash)->first();
+        }
+
+        $link = Link::create([
+            'hash' => $hash,
+            'url_scheme' => $url['scheme'],
+            'url_host' => $url['host'],
+            'url_port' => $url['port'],
+            'url_path' => $url['path'],
+            'url_query' => $url['query'],
+            'url_fragment' => $url['fragment'],
+            'created_by' => auth()->check() ? auth()->id() : 1,
+        ]);
+
+        $this->cacheLink($link);
+
+        return $hash;
+    }
+
+    /**
+     * @param $link
+     * @return Link
+     */
+    public function cacheLink(Link $link)
+    {
+        Cache::put($link->hash, $this->unParseUrlFromDb($link), 86400);
+
+        return $link;
+    }
+
+    /**
+     * @return string
+     */
+    public function generateHash()
+    {
+        $hash = Str::random(6);
+        while (in_array(strtolower($hash), $this->excludedWords()->toArray())) {
+            $hash = Str::random(6);
+        }
+
+        return $hash;
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function excludedWords()
+    {
+        return collect(json_decode(File::get(storage_path('json/words-six.json')), true));
     }
 }
