@@ -2,8 +2,8 @@
 [anon.to](https://anon.to) is an anonymous URL redirector and shortener built using [Laravel](https://laravel.com/).
 
 ### Requirement
-- [**PHP**](https://php.net) 5.6.4+ (**7.0** preferred)
-- PHP Extensions: openssl, mcrypt and mbstring, phpredis
+- [**PHP**](https://php.net) 7.2+ (**7.4** preferred)
+- PHP Extensions: openssl, phpredis
 - Database server: [MySQL](https://www.mysql.com) or [**MariaDB**](https://mariadb.org)
 - [Redis](http://redis.io) Server
 - [Composer](https://getcomposer.org)
@@ -37,8 +37,7 @@ Click on **forgot password** link on the **login page** and reset password for y
 crontab -e -u www-data
 ```
 ```bash
-* * * * * php /home/web/anon.to/artisan schedule:run >/dev/null 2>&1
-*/5 * * * * php /home/web/anon.to/artisan auth:clear-resets >/dev/null 2>&1
+* * * * * cd /home/web/anon.to && php artisan schedule:run >> /dev/null 2>&1
 ```
 
 #### Setup Supervisor
@@ -53,20 +52,6 @@ autostart=true
 autorestart=true
 user=www-data
 numprocs=2
-```
-
-#### Setup Google ReCaptcha
-Visit https://www.google.com/recaptcha/admin and register your site
-
-Get **Site key** and **Secret key**, add them in your .env file
-```$xslt
-...
-## Secret Key
-API_GOOGLE_RECAPTCHA='SECRET KEY'
-
-## Site Key
-API_GOOGLE_RECAPTCHA_CLIENT='SITE KEY'
-...
 ```
 
 ### License

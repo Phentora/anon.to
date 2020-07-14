@@ -1,60 +1,56 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="page-title">{{ meta()->pageTitle() }}</h1>
-    <div class="block">
-        {!! Form::open(['files'=>false, 'url'=>url('report'), 'id'=>'form_report', 'class' => 'form-horizontal', 'role'=>'form']) !!}
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="h3 m-0">Report a link</h1>
+            </div>
+            <div class="card-body pb-4">
+                <p class="lead">Report a Link!</p>
+                <form method="POST" action="{{ url('report') }}" id="form_report_url">
+                    @csrf
+                    <div class="form-group row">
+                        <label for="url" class="col-sm-2 col-form-label text-sm-right">Link</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="url" id="url" class="form-control" placeholder="Paste a Link">
+                        </div>
+                    </div>
 
-        <div class="form-group{{ $errors->has('url') ? ' has-error' : '' }}">
-            {!! Form::label('url', 'Link', ['class' => 'col-sm-2 control-label']) !!}
-            <div class="col-sm-8">
-                {!! Form::url('url', old('url'), ['class' => 'form-control', 'placeholder'=>'Paste a URL', 'required', 'autofocus']) !!}
-                @if ($errors->has('url'))
-                    <span class="help-block"><strong>{{ $errors->first('url') }}</strong></span>
-                @endif
+                    <div class="form-group row">
+                        <label for="email" class="col-sm-2 col-form-label text-sm-right">Your Email</label>
+                        <div class="col-sm-8">
+                            <input type="email" name="email" id="email" class="form-control" placeholder="Your Email Address">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="comment" class="col-sm-2 col-form-label text-sm-right">Comment</label>
+                        <div class="col-sm-8">
+                            <textarea name="comment" id="comment" rows="5" class="form-control" placeholder="Reason for reporting this link"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-8 offset-sm-2">
+                            @if(env('RECAPTCHA_SITE_KEY'))
+                                <button type="submit" class="btn btn-primary g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Report</button>
+                            @else
+                                <button type="submit" class="btn btn-primary">Report</button>
+                            @endif
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
 
-        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-            {!! Form::label('email', 'Your E-Mail', ['class' => 'col-sm-2 control-label']) !!}
-            <div class="col-sm-8">
-                {!! Form::email('email', old('email'), ['class' => 'form-control', 'placeholder'=>'Your E-Mail Address', 'required']) !!}
-                @if ($errors->has('email'))
-                    <span class="help-block"><strong>{{ $errors->first('email') }}</strong></span>
-                @endif
-            </div>
-        </div>
-
-        <div class="form-group{{ $errors->has('comment') ? ' has-error' : '' }}">
-            {!! Form::label('comment', 'Comment', ['class' => 'col-sm-2 control-label']) !!}
-            <div class="col-sm-8">
-                {!! Form::textarea('comment', old('comment'), ['class' => 'form-control', 'placeholder'=>'Reason for reporting the link', 'required']) !!}
-                @if ($errors->has('comment'))
-                    <span class="help-block"><strong>{{ $errors->first('comment') }}</strong></span>
-                @endif
-            </div>
-        </div>
-
-        <div class="form-group{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}">
-            {!! Form::label('g-recaptcha-response', 'Verify', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-8">
-                <div class="g-recaptcha" data-sitekey="{{ env('API_GOOGLE_RECAPTCHA_CLIENT') }}"></div>
-                @if ($errors->has('g-recaptcha-response'))
-                    <span class="help-block form-error">{{ $errors->first('g-recaptcha-response')  }}</span>
-                @endif
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-sm-8 col-sm-offset-2">
-                {!! Form::submit('Report', ['class' => 'btn btn-primary']) !!}
-            </div>
-        </div>
-
-        {!! Form::close() !!}
     </div>
 @endsection
 
 @section('footer_js')
-    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script>
+        function onSubmit(token) {
+            document.getElementById("form_report_url").submit();
+        }
+    </script>
 @endsection

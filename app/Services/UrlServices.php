@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Links;
+use App\Models\Link;
 
 class UrlServices
 {
@@ -13,13 +13,13 @@ class UrlServices
     public function parseUrl($url)
     {
         $defaults = [
-            "scheme"   => null,
-            "host"     => null,
-            "port"     => null,
-            "user"     => null,
-            "pass"     => null,
-            "path"     => null,
-            "query"    => null,
+            "scheme" => null,
+            "host" => null,
+            "port" => null,
+            "user" => null,
+            "pass" => null,
+            "path" => null,
+            "query" => null,
             "fragment" => null,
         ];
         $parsed = parse_url($url) + $defaults;
@@ -49,14 +49,14 @@ class UrlServices
         return $unparsed;
     }
 
-    public function unParseUrlFromDb(Links $link)
+    public function unParseUrlFromDb(Link $link)
     {
         $segments = [
-            "scheme"   => $link->url_scheme,
-            "host"     => $link->url_host,
-            "port"     => $link->url_port,
-            "path"     => $link->url_path,
-            "query"    => $link->url_query,
+            "scheme" => $link->url_scheme,
+            "host" => $link->url_host,
+            "port" => $link->url_port,
+            "path" => $link->url_path,
+            "query" => $link->url_query,
             "fragment" => $link->url_fragment,
         ];
 

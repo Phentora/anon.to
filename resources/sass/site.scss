@@ -1,0 +1,15 @@
+.c-footer {
+    height: auto;
+}
+
+pre, code, .pre {
+    font-size: 12px;
+    padding: 0 1em 0 2em;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: Fira Code Regular, monospace;
+    background-image: linear-gradient(180deg, $body-bg 50%, $card-bg 50%);
+    line-height: 24px;
+    background-size: 100% 48px;
+    background-position: 0 24px;
+}

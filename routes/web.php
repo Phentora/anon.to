@@ -1,30 +1,17 @@
 <?php
 
-Route::group(['middleware' => 'auth'], function () {
-    Route::group(['prefix' => 'my'], function () {
-        Route::get('/', 'My\MyLinksController@index');
-    });
+use Illuminate\Support\Facades\Route;
 
-    Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
-        Route::get('links', 'My\MyLinksController@index');
-        Route::get('reports', 'Admin\AdminController@reports');
-    });
+Auth::routes(['verify' => true]);
 
-    Route::delete('delete/link', 'My\MyLinksController@delete')->middleware(['admin']);
-});
+Route::get('report', 'ReportController@index');
 
-Auth::routes();
-Route::get('activate/{token}', 'Auth\ActivationController@activate');
+Route::get('/{key}', 'RedirectController@redirect')->where('key', '[A-Za-z0-9]{6}');
 
-Route::get('report', 'ReportLinkController@report');
-Route::post('report', 'ReportLinkController@postReport');
-
-Route::get('email/unsubscribe', 'StaticPagesController@unsubscribe');
-
-Route::post('shorten', 'ShortenLinkController@shorten')->middleware(['ajax', 'throttle:20,1']);
-
-Route::get('csrf', function () {
-    return response()->json(csrf_token());
-})->middleware(['ajax']);
+Route::post('shorten', 'LinksController@shorten');
 
 Route::get('/', 'HomeController@index');
+
+Route::get('bootstrap', function () {
+    return view('bootstrap');
+});

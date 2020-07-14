@@ -2,22 +2,20 @@
 
 namespace App\Services;
 
-use Illuminate\Http\Request;
-
 class MetaDataService
 {
-    protected $meta_title, $page_title, $description, $canonical, $icon, $theme, $color, $request;
+    protected $site_name, $meta_title, $page_title, $description, $canonical, $icon, $theme, $color;
 
-    /**
-     * MetaDataService constructor.
-     * @param Request $request
-     */
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $this->request = $request;
-
         $this->meta_title = $this->getDefaultTitle();
-        $this->setDefaultMeta();
+    }
+
+    private function getDefaultTitle()
+    {
+        $this->site_name = env('APP_NAME');
+
+        return $this->site_name ?: 'APP_NAME';
     }
 
     public function setMeta($page_title = null, $meta_title = null, $description = null, $icon = null)
@@ -25,7 +23,7 @@ class MetaDataService
         $this->pageTitle($page_title);
         $this->metaTitle($meta_title);
         if (empty($meta_title)) {
-            if ($page = $this->request->get('page')) {
+            if ($page = request()->get('page')) {
                 if ($page > 1) {
                     $page_title .= ' (Page ' . $page . ')';
                 }
@@ -37,8 +35,13 @@ class MetaDataService
         $this->icon($icon);
     }
 
-    public function setTheme($theme = null, $color = null)
+    public function pageTitle($title = null)
     {
+        if ($title) {
+            $this->page_title = $title;
+        }
+
+        return $this->page_title;
     }
 
     public function metaTitle($title = null)
@@ -50,15 +53,6 @@ class MetaDataService
         return $this->meta_title;
     }
 
-    public function pageTitle($title = null)
-    {
-        if ($title) {
-            $this->page_title = $title;
-        }
-
-        return $this->page_title;
-    }
-
     public function description($description = null)
     {
         if ($description) {
@@ -66,15 +60,6 @@ class MetaDataService
         }
 
         return $this->description;
-    }
-
-    public function canonical($url = null)
-    {
-        if ($url) {
-            $this->canonical = $url;
-        }
-
-        return $this->canonical;
     }
 
     public function icon($icon = null)
@@ -86,26 +71,30 @@ class MetaDataService
         return $this->icon;
     }
 
-    private function setDefaultMeta()
+    public function canonical($url = null)
     {
-//        switch ($this->request->getRequestUri()) {
-//            case '/login':
-//                $this->setMeta('Login');
-//                break;
-//            case '/register':
-//                $this->setMeta('Register');
-//                break;
-//            case '/password/reset':
-//                $this->setMeta('Reset Password');
-//                break;
-//        }
+        if ($url) {
+            $this->canonical = $url;
+        }
+
+        return $this->canonical;
     }
 
-    /**
-     * @return mixed
-     */
-    private function getDefaultTitle()
+    public function theme($theme = null)
     {
-        return env('SITE_NAME') ?: 'Site Name';
+        if ($theme) {
+            $this->theme = $theme;
+        }
+
+        return $this->theme;
+    }
+
+    public function color($color = null)
+    {
+        if ($color) {
+            $this->color = $color;
+        }
+
+        return $this->color;
     }
 }

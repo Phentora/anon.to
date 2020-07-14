@@ -1,40 +1,38 @@
-<!DOCTYPE html>
-<html lang="{{ config('app.locale') }}">
+<!doctype html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="_token" content="{{ csrf_token() }}">
-    <meta name="_base_url" content="{{ url('/') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ meta()->metaTitle() }}</title>
-    @if(meta()->description())
-        <meta name="description" content="{{ meta()->description() }}">
-    @endif
-    <link rel="shortcut icon" href="{{ url('favicon.png') }}">
-    <link href="{{ url(mix('css/app.css')) }}" rel="stylesheet">
-    @yield('header_css')
+    <script src="{{ asset(mix('js/app.js')) }}" defer></script>
+    <link href="{{ asset(mix('css/app.css')) }}" rel="stylesheet">
 </head>
-<body>
+<body class="c-app">
+<div class="c-wrapper">
 
-<header>
-    @include('layouts.blocks.nav')
-</header>
+    <header class="c-header c-header-dark c-header-fixed">
+        @include('layouts.nav')
+    </header>
+    <div class="c-body">
+        <main class="c-main">
+            @yield('content')
+        </main>
+    </div>
 
-<section class="container content" id="content-area">
-    @include('layouts.blocks.notifications')
-    @yield('content')
-</section>
+    <footer class="c-footer c-footer-dark">
+        @include('layouts.footer')
+    </footer>
 
-@include('layouts.blocks.footer')
+</div>
 
-<script src="{{ url(mix('js/app.js')) }}"></script>
+@if(env('RECAPTCHA_SITE_KEY'))
+    <script src="https://www.google.com/recaptcha/api.js?render={{ env('RECAPTCHA_SITE_KEY') }}"></script>
+    <script>
+        var RECAPTCHA_SITE_KEY = '{{ env('RECAPTCHA_SITE_KEY') }}';
+    </script>
+@endif
 @yield('footer_js')
-
-<script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-    ga('create', '{{ env('GOOGLE_ANALYTICS') }}', 'auto');
-    ga('send', 'pageview');
-</script>
 
 </body>
 </html>
