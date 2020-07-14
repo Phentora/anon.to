@@ -3,11 +3,11 @@
 
 ### Requirement
 - [**PHP**](https://php.net) 7.2+ (**7.4** preferred)
-- PHP Extensions: openssl, phpredis
+- PHP Extensions: openssl, phpredis, json
 - Database server: [MySQL](https://www.mysql.com) or [**MariaDB**](https://mariadb.org)
 - [Redis](http://redis.io) Server
 - [Composer](https://getcomposer.org)
-- [Node.js](https://nodejs.org/) with npm
+- [Node.js](https://nodejs.org/) with npm or [**yarn**](https://classic.yarnpkg.com/lang/en/)
 
 ### Installation
 * clone the repository: `git clone https://github.com/bhutanio/anon.to.git anon.to`
@@ -17,10 +17,15 @@
 * setup database tables: `php artisan migrate`
 
 ### Upgrade from previous version
-latest version of **anon.to** is fully compatible with all previous versions. All you have to do is run the migration.
+The latest version of **anon.to** is fully compatible with all previous versions. All you have to do is run the upgrade script.
  ```bash
-php artisan migrate
+php artisan anonto:upgrade:db
 ```
+Edit old ```.env``` file and rename the following variables:
+- from ```API_GOOGLE_RECAPTCHA``` to ```RECAPTCHA_SECRET_KEY```
+- from ```API_GOOGLE_RECAPTCHA_CLIENT``` to ```RECAPTCHA_SITE_KEY```
+
+Refer new [```.env.example```](https://github.com/bhutanio/anon.to/blob/master/.env.example) file update accordingly
 
 ### Configuration
 #### Setup Admin Account
@@ -47,11 +52,28 @@ nano /etc/supervisor/conf.d/anon.conf
 ```bash
 [program:anon-queue]
 process_name=%(program_name)s_%(process_num)02d
-command=php /home/web/anon.to/artisan queue:work --sleep=3 --tries=3
+command=php /home/web/anon.to/artisan queue:work sqs --sleep=3 --tries=3
 autostart=true
 autorestart=true
 user=www-data
-numprocs=2
+numprocs=4
+redirect_stderr=true
+stdout_logfile=/home/web/anon.to/storage/logs/supervisor.log
+stopwaitsecs=3600
+```
+
+#### Setup Google ReCaptcha *(optional)*
+Visit https://www.google.com/recaptcha/admin and register your site
+
+**Select reCAPTCHA v3**
+
+Copy **Site key** and **Secret key**, add them in your .env file
+
+```bash
+...
+RECAPTCHA_SITE_KEY=
+RECAPTCHA_SECRET_KEY=
+...
 ```
 
 ### License
