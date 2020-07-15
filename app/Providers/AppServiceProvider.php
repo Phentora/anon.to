@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\AnonServices;
 use App\Services\MetaDataService;
-use App\Services\UrlServices;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(MetaDataService::class);
-        $this->app->singleton(UrlServices::class);
+        $this->app->singleton(AnonServices::class);
     }
 
     /**

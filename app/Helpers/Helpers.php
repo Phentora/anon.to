@@ -1,7 +1,6 @@
 <?php
 
 use App\Services\MetaDataService;
-use App\Services\UrlServices;
 use Carbon\Carbon;
 
 /**
@@ -21,14 +20,6 @@ function carbon($time = null, $tz = null)
 function meta()
 {
     return app(MetaDataService::class);
-}
-
-/**
- * @return UrlServices
- */
-function url_services()
-{
-    return app(UrlServices::class);
 }
 
 function is_valid_url($url)

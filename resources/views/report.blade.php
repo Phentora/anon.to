@@ -7,7 +7,6 @@
                 <h1 class="h3 m-0">Report a link</h1>
             </div>
             <div class="card-body pb-4">
-                <p class="lead">Report a Link!</p>
                 <form method="POST" action="{{ url('report') }}" id="form_report_url">
                     @csrf
                     <div class="form-group row">
@@ -48,9 +47,11 @@
 @endsection
 
 @section('footer_js')
-    <script>
-        function onSubmit(token) {
-            document.getElementById("form_report_url").submit();
-        }
-    </script>
+    @if(env('RECAPTCHA_SITE_KEY'))
+        <script>
+            function onSubmit(token) {
+                document.getElementById("form_report_url").submit();
+            }
+        </script>
+    @endif
 @endsection

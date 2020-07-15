@@ -20,6 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'username',
         'email',
         'password',
+        'login_at',
     ];
 
     /**
@@ -49,5 +50,10 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         return false;
+    }
+
+    public function links()
+    {
+        return $this->hasMany(Link::class, 'created_by');
     }
 }

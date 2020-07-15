@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLinksTable extends Migration
+class CreateRedirectsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,11 @@ class CreateLinksTable extends Migration
      */
     public function up()
     {
-        Schema::create('links', function (Blueprint $table) {
+        Schema::create('redirects', function (Blueprint $table) {
             $table->id();
-            $table->string('hash')->unique();
-            $table->string('url_scheme');
-            $table->text('url_host');
-            $table->text('url_port')->nullable();
-            $table->text('url_path')->nullable();
-            $table->text('url_query')->nullable();
-            $table->text('url_fragment')->nullable();
+            $table->text('url');
             $table->timestamp('visited_at')->nullable();
             $table->unsignedBigInteger('visits')->nullable();
-            $table->unsignedBigInteger('created_by')->index();
             $table->timestamps();
         });
     }
@@ -36,6 +29,6 @@ class CreateLinksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('links');
+        Schema::dropIfExists('redirects');
     }
 }

@@ -8,7 +8,7 @@
                     <div class="card-header">{{ __('Register') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('register') }}">
+                        <form method="POST" action="{{ route('register') }}" id="form_register">
                             @csrf
 
                             <div class="form-group row">
@@ -63,9 +63,11 @@
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('Register') }}
-                                    </button>
+                                    @if(env('RECAPTCHA_SITE_KEY'))
+                                        <button type="submit" class="btn btn-primary g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>{{ __('Register') }}</button>
+                                    @else
+                                        <button type="submit" class="btn btn-primary">{{ __('Register') }}</button>
+                                    @endif
                                 </div>
                             </div>
                         </form>
@@ -74,4 +76,14 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('footer_js')
+    @if(env('RECAPTCHA_SITE_KEY'))
+        <script>
+            function onSubmit(token) {
+                document.getElementById("form_register").submit();
+            }
+        </script>
+    @endif
 @endsection

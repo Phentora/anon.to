@@ -15,8 +15,8 @@
         <li class="c-sidebar-nav-title">Config</li>
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="{{ url('admin/users') }}"><i class="c-sidebar-nav-icon fa fa-users"></i> Users</a>
-            <a class="c-sidebar-nav-link" href="{{ url('admin/reports') }}"><i class="c-sidebar-nav-icon fa fa-check-square"></i> Allow List</a>
-            <a class="c-sidebar-nav-link" href="{{ url('admin/reports') }}"><i class="c-sidebar-nav-icon fa fa-ban"></i> Block List</a>
+            <a class="c-sidebar-nav-link" href="{{ url('admin/lists/allow') }}"><i class="c-sidebar-nav-icon fa fa-check-square"></i> Allow List</a>
+            <a class="c-sidebar-nav-link" href="{{ url('admin/lists/block') }}"><i class="c-sidebar-nav-icon fa fa-ban"></i> Block List</a>
         </li>
     </ul>
     <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>

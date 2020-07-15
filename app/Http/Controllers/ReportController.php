@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Link;
-
 class ReportController extends Controller
 {
     public function __construct()
@@ -12,6 +10,8 @@ class ReportController extends Controller
 
     public function index()
     {
+        meta()->setMeta('Report a link');
+
         return view('report');
     }
 }

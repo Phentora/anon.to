@@ -11,13 +11,6 @@ class MetaDataService
         $this->meta_title = $this->getDefaultTitle();
     }
 
-    private function getDefaultTitle()
-    {
-        $this->site_name = env('APP_NAME');
-
-        return $this->site_name ?: 'APP_NAME';
-    }
-
     public function setMeta($page_title = null, $meta_title = null, $description = null, $icon = null)
     {
         $this->pageTitle($page_title);
@@ -96,5 +89,12 @@ class MetaDataService
         }
 
         return $this->color;
+    }
+
+    private function getDefaultTitle()
+    {
+        $this->site_name = env('APP_NAME') ?? env('SITE_NAME');
+
+        return $this->site_name ?? 'APP_NAME';
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\CreatedByTrait;
+use App\Services\AnonServices;
 use Illuminate\Database\Eloquent\Model;
 
 class Link extends Model
@@ -22,5 +23,8 @@ class Link extends Model
         'created_by',
     ];
 
-
+    public function getUrlAttribute()
+    {
+        return app(AnonServices::class)->unParseUrl($this);
+    }
 }

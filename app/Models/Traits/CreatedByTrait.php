@@ -3,6 +3,7 @@
 namespace App\Models\Traits;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 
 trait CreatedByTrait
 {
@@ -19,7 +20,7 @@ trait CreatedByTrait
 
     private static function getAuthId()
     {
-        return Auth::check() ? Auth::id() : 1;
+        return auth()->check() ? auth()->id() : 1;
     }
 
     public function user($key = 'created_by')
