@@ -15,9 +15,10 @@ class CreateRedirectsTable extends Migration
     {
         Schema::create('redirects', function (Blueprint $table) {
             $table->id();
+            $table->string('hash')->unique();
             $table->text('url');
             $table->timestamp('visited_at')->nullable();
-            $table->unsignedBigInteger('visits')->nullable();
+            $table->unsignedBigInteger('visits')->default(0);
             $table->timestamps();
         });
     }

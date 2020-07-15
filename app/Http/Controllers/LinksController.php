@@ -77,7 +77,7 @@ class LinksController extends Controller
             return response()->json(['message' => 'Existing URL', 'url' => url($link->hash)], 200);
         }
 
-        $link = $this->anon_service->saveLink($parsed_url);
+        $link = $this->anon_service->addLink($parsed_url);
 
         return response()->json(['message' => 'New URL', 'url' => url($link->hash)]);
     }

@@ -23,7 +23,7 @@ class CreateLinksTable extends Migration
             $table->text('url_query')->nullable();
             $table->text('url_fragment')->nullable();
             $table->timestamp('visited_at')->nullable();
-            $table->unsignedBigInteger('visits')->nullable();
+            $table->unsignedBigInteger('visits')->default(0);
             $table->unsignedBigInteger('created_by')->index();
             $table->timestamps();
         });

@@ -35,7 +35,7 @@
                     @foreach($links as $link)
                         <tr>
                             <td><a href="{{ url($link->hash) }}" target="_blank">{{ $link->hash }}</a></td>
-                            <td class="text-break"><a href="{{ $link->url }}" target="_blank">{{ urldecode($link->url) }}</a></td>
+                            <td class="text-break"><a href="http://anon.to.abit/?{{ $link->url }}" target="_blank">{{ urldecode($link->url) }}</a></td>
                             <td>{{ carbon($link->created_at)->longRelativeDiffForHumans() }}</td>
                             <td>{{ $link->user->username }}</td>
                         </tr>

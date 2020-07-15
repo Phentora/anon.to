@@ -138,15 +138,19 @@ class AnonServices
      */
     public function redirect($url)
     {
+        $hash = null;
         if (is_valid_url($url)) {
             $url = urldecode($url);
         } else {
+            $hash = $url;
             $url = $this->getUrl($url);
         }
 
         if ($this->denyRedirect($url)) {
             abort(403, 'Redirect Denied!');
         }
+
+        app('redis')->lpush('redirects', $hash ?? $url);
 
         return response()->view('anonymous', ['url' => $url, 'allow_redirect' => $this->allowRedirect($url)])
             ->setExpires(Carbon::now()->addHours(1))

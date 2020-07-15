@@ -20,6 +20,8 @@ class Link extends Model
         'url_path',
         'url_query',
         'url_fragment',
+        'visited_at',
+        'visits',
         'created_by',
     ];
 

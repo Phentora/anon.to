@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Link;
+use App\Services\AnonServices;
+use Illuminate\Support\Arr;
 
 class LinksAdminController extends Controller
 {
@@ -25,6 +27,28 @@ class LinksAdminController extends Controller
 
     private function searchLinks($links)
     {
+        if ($hash = request()->get('hash')) {
+            $hash = explode('/', $hash);
+            $hash = Arr::last($hash);
+            $links = $links->where('hash', $hash);
+        }
+
+        if ($host = request()->get('host')) {
+            if (is_valid_url($host)) {
+                $host = app(AnonServices::class)->parseUrl($host)['host'];
+            }
+
+            $links = $links->where('url_host', 'LIKE', '%' . $host . '%');
+        }
+
+        if ($path = request()->get('path')) {
+            $links = $links->where(function ($q) use ($path) {
+                $q->orWhere('url_path', 'LIKE', '%' . $path . '%');
+                $q->orWhere('url_query', 'LIKE', '%' . $path . '%');
+                $q->orWhere('url_fragment', 'LIKE', '%' . $path . '%');
+            });
+        }
+
         return $links;
     }
 
