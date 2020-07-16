@@ -30,9 +30,3 @@ Route::get('bootstrap', function () {
     return view('bootstrap');
 });
 
-Route::get('tinkered', function () {
-    $anon = app(AnonServices::class);
-    foreach (Link::take(1000)->get() as $link) {
-        echo $anon->getUrl($link->hash);
-    }
-});
