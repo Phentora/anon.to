@@ -45,7 +45,7 @@
                             <td><span data-toggle="tooltip" title="{{ carbon($link->created_at)->toDateTimeString() }}">{{ carbon($link->created_at)->shortAbsoluteDiffForHumans(2) }}</span></td>
                             <td>{{ $link->user->username }}</td>
 
-                            <td>
+                            <td class="text-right">
                                 <button type="button" class="btn btn-sm btn-warning"
                                         data-action="delete"
                                         data-title="You want to delete this link?"

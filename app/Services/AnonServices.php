@@ -147,7 +147,7 @@ class AnonServices
         }
 
         if ($this->denyRedirect($url)) {
-            abort(403, 'Redirect Denied!');
+            abort(403, 'Redirect Denied. Link Blocked!');
         }
 
         app('redis')->lpush('redirects', $hash ?? $url);

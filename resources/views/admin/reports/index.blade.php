@@ -53,7 +53,7 @@
                             </td>
                             <td>{{ carbon($report->created_at)->longRelativeDiffForHumans() }}</td>
                             <td>{{ $report->user->username }}</td>
-                            <td>
+                            <td class="text-right">
                                 <button type="button" class="btn btn-sm btn-primary"
                                         data-action="delete"
                                         data-title="You want to ignore this report?"

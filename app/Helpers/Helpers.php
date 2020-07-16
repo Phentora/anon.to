@@ -109,3 +109,19 @@ function is_public_ip($ip)
 
     return (bool)filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
 }
+
+function flash($message, $type = 'info')
+{
+    if ($type == 'error') {
+        $type = 'danger';
+    }
+
+    if (!in_array($type, ['success', 'info', 'warning', 'danger'])) {
+        $type = 'info';
+    }
+
+    app('session')->flash('flash_message', [
+        'type' => $type,
+        'message' => $message,
+    ]);
+}

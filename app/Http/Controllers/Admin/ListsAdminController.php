@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AllowList;
+use App\Rules\Hostname;
 use Illuminate\Support\Facades\Cache;
 
 class ListsAdminController extends Controller
@@ -18,16 +19,26 @@ class ListsAdminController extends Controller
 
         $lists = AllowList::latest();
 
-        $this->cacheList();
-
         return view('admin.lists.index', ['lists' => $lists->paginate(100)]);
     }
 
-    public function add()
+    public function post()
     {
-        $list = new AllowList();
+        $this->validate(request(), [
+            'url_host' => ['required', 'unique:allow_lists', new Hostname()],
+        ]);
+        $host = request()->get('url_host');
+        $allow = request()->get('allow');
 
-        return view('admin.lists.edit', ['list' => $list]);
+        AllowList::create([
+            'url_host' => $host,
+            'allow' => (bool) $allow,
+            'reason' => request()->get('reason'),
+        ]);
+
+        flash($host . ($allow ? ' allowed ' : ' blocked ') . 'successfully!', 'success');
+        $this->cacheList();
+        return redirect('admin/lists');
     }
 
     private function cacheList()
