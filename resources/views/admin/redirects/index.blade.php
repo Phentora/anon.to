@@ -35,7 +35,8 @@
                     <tbody>
                     @foreach($redirects as $redirect)
                         <tr>
-                            <td class="text-break"><a href="{{ $redirect->url }}" title="{{ urldecode($redirect->url) }}" target="_blank">{{ \Illuminate\Support\Str::limit($redirect->url, 64) }}</a>
+                            <td class="text-break">
+                                <a href="{{ env('APP_URL').'?'.$redirect->url }}" title="{{ urldecode($redirect->url) }}" target="_blank">{{ \Illuminate\Support\Str::limit($redirect->url, 64) }}</a>
                             </td>
                             <td>
                                 <div class="tag tag-bordered tag-border-success">{{ $redirect->visits }}</div>
