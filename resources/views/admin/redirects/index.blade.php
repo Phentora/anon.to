@@ -23,21 +23,26 @@
                 <table class="table table-sm table-striped">
                     <thead>
                     <tr>
-                        <th>URL</th>
-                        <th>Visits</th>
-                        <th style="width: 120px;">Added</th>
+                        <th>{!! sort_row(url()->current(), $params, 'url', 'URL', 'URL', 'asc') !!}</th>
+                        <th>
+                            {!! sort_row(url()->current(), $params, 'visits') !!}
+                            {!! sort_row(url()->current(), $params, 'visited', 'visited at', 'At') !!}
+                        </th>
+                        <th style="width: 120px;">{!! sort_row(url()->current(), $params, 'added') !!}</th>
                         <th>&nbsp;</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($redirects as $redirect)
                         <tr>
-                            <td class="text-break"><a href="{{ $redirect->url }}" title="{{ urldecode($redirect->url) }}" target="_blank">{{ \Illuminate\Support\Str::limit($redirect->url, 64) }}</a></td>
+                            <td class="text-break"><a href="{{ $redirect->url }}" title="{{ urldecode($redirect->url) }}" target="_blank">{{ \Illuminate\Support\Str::limit($redirect->url, 64) }}</a>
+                            </td>
                             <td>
                                 <div class="tag tag-bordered tag-border-success">{{ $redirect->visits }}</div>
                                 <div class="tag tag-bordered tag-border-info" data-toggle="tooltip" title="{{ $redirect->visited_at ? carbon($redirect->visited_at)->toDateTimeString() : '-' }}">{{ $redirect->visited_at ? carbon($redirect->visited_at)->shortAbsoluteDiffForHumans() : '-' }}</div>
                             </td>
-                            <td><span data-toggle="tooltip" title="{{ carbon($redirect->created_at)->toDateTimeString() }}">{{ carbon($redirect->created_at)->shortAbsoluteDiffForHumans(2) }}</span></td>
+                            <td><span data-toggle="tooltip" title="{{ carbon($redirect->created_at)->toDateTimeString() }}">{{ carbon($redirect->created_at)->shortAbsoluteDiffForHumans(2) }}</span>
+                            </td>
 
                             <td class="text-right">
                                 <button type="button" class="btn btn-sm btn-danger"

@@ -25,10 +25,19 @@
                 <table class="table table-sm table-striped">
                     <thead>
                     <tr>
-                        <th>Hash</th>
-                        <th>URL</th>
-                        <th>Visits</th>
-                        <th style="width: 120px;">Added</th>
+                        <th>{!! sort_row(url()->current(), $params, 'hash', 'Hash', 'Hash', 'asc') !!}</th>
+                        <th>
+                            <div class="d-inline">URL</div>
+                            <div class="d-inline float-right">
+                                {!! sort_row(url()->current(), $params, 'host', 'Host', 'Host', 'asc') !!}
+                                {!! sort_row(url()->current(), $params, 'path', 'Path', 'Path', 'asc') !!}
+                            </div>
+                        </th>
+                        <th>
+                            {!! sort_row(url()->current(), $params, 'visits') !!}
+                            {!! sort_row(url()->current(), $params, 'visited', 'visited at', 'At') !!}
+                        </th>
+                        <th style="width: 120px;">{!! sort_row(url()->current(), $params, 'added') !!}</th>
                         <th>User</th>
                         <th>&nbsp;</th>
                     </tr>

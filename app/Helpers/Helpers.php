@@ -125,3 +125,56 @@ function flash($message, $type = 'info')
         'message' => $message,
     ]);
 }
+
+
+function sort_order($name, $order_column, $order_by, $default = 'desc')
+{
+    if ($name == $order_column) {
+        return ($order_by == 'desc') ? 'asc' : 'desc';
+    }
+
+    return $default;
+}
+
+function sort_icon($name, $order_column, $order_by)
+{
+    if ($name == $order_column && $order_by == 'desc') {
+        return '<i class="fa fa-fw fa-sort-down" title="Descending Order (big to small)"></i>';
+    } elseif ($name == $order_column) {
+        return '<i class="fa fa-fw fa-sort-up" title="Ascending Order (small to big)"></i>';
+    }
+
+    return '<i class="fa fa-fw fa-sort"></i>';
+}
+
+function sort_row($action_url, $param, $column, $title = null, $display = null, $default_order = 'desc')
+{
+    $url = url($action_url) . '?' .
+        http_build_query($param['order_appends'] + [
+                'order' => $column,
+                'sort' => sort_order($column, $param['order'], $param['sort'], $default_order),
+            ]);
+
+    return '<a href="' . $url . '" class="sort" data-toggle="tooltip" title="Order by ' . ($title ? $title : Str::title($column)) . '">' .
+        ($display ? $display : ($title ? $title : Str::title($column))) . sort_icon($column, $param['order'],
+            $param['sort']) . "</a>";
+
+}
+
+function search_append($appends = [], $key, $value, $multiple = false)
+{
+    if ($multiple) {
+        if (isset($appends[$key]) && is_array($appends[$key])) {
+            array_push($appends[$key], $value);
+            $appends[$key] = array_unique($appends[$key]);
+        } else {
+            $appends = array_merge($appends, [$key => [$value]]);
+        }
+    } else {
+        $appends = array_merge($appends, [$key => $value]);
+    }
+
+    $appends = Arr::sort($appends);
+
+    return '?' . http_build_query($appends);
+}

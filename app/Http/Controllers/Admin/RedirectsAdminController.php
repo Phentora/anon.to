@@ -15,12 +15,15 @@ class RedirectsAdminController extends Controller
     {
         meta()->setMeta('Redirects');
 
+        $params['order_appends'] = request()->only(['url']);
+        $params['order'] = request()->get('order', 'added');
+        $params['sort'] = request()->get('sort', 'desc');
+
         $redirects = app(Redirect::class);
-
         $redirects = $this->searchLinks($redirects);
-        $redirects = $this->sortLinks($redirects);
+        $redirects = app(LinksAdminController::class)->sortLinks($redirects, $params);
 
-        return view('admin.redirects.index', ['redirects' => $redirects->paginate(100)]);
+        return view('admin.redirects.index', ['redirects' => $redirects->paginate(100), 'params' => $params]);
     }
 
     private function searchLinks($redirects)
@@ -30,10 +33,5 @@ class RedirectsAdminController extends Controller
         }
 
         return $redirects;
-    }
-
-    private function sortLinks($redirects)
-    {
-        return $redirects->latest();
     }
 }
