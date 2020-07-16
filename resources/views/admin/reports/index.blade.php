@@ -20,44 +20,56 @@
                     </form>
                 </div>
             </div>
-            <div class="float-right">{{ $links->withQueryString()->links() }}</div>
+            <div class="float-right">{{ $reports->withQueryString()->links() }}</div>
             <div class="table-responsive">
-                <table class="table table-sm table-striped">
+                <table class="table table-sm">
                     <thead>
                     <tr>
-                        <th>Hash</th>
+                        <th>Email</th>
+                        <th>IP</th>
+                        <th>Report</th>
                         <th>URL</th>
-                        <th>Visits</th>
+                        <th>Hash</th>
                         <th style="width: 120px;">Added</th>
                         <th>User</th>
                         <th>&nbsp;</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($links as $link)
-                        <tr>
-                            <td><a href="{{ url($link->hash) }}" target="_blank">{{ $link->hash }}</a></td>
-                            <td class="text-break"><a href="{{ $link->url }}" title="{{ urldecode($link->url) }}" target="_blank">{{ \Illuminate\Support\Str::limit($link->url, 64) }}</a></td>
+                    @foreach($reports as $report)
+                        <tr class="{{ empty($report->link->hash) ? 'table-danger' : ($report->dealt_at ? 'table-success' : '') }}">
+                            <td>{{ $report->email }}</td>
+                            <td>{{ $report->ip_address }}</td>
                             <td>
-                                <div class="tag tag-bordered tag-border-success">{{ $link->visits }}</div>
-                                <div class="tag tag-bordered tag-border-info" data-toggle="tooltip" title="{{ $link->visited_at ? carbon($link->visited_at)->toDateTimeString() : '-' }}">{{ $link->visited_at ? carbon($link->visited_at)->shortAbsoluteDiffForHumans() : '-' }}</div>
+                                <button type="button" class="btn btn-sm btn-info" data-toggle="popover" data-html="true" data-content="{{ nl2br($report->comment) }}">show</button>
                             </td>
-                            <td><span data-toggle="tooltip" title="{{ carbon($link->created_at)->toDateTimeString() }}">{{ carbon($link->created_at)->shortAbsoluteDiffForHumans(2) }}</span></td>
-                            <td>{{ $link->user->username }}</td>
-
+                            <td class="text-break"><a href="{{ url($report->url) }}" title="{{ url($report->url) }}" target="_blank">{{ \Illuminate\Support\Str::limit($report->url, 32) }}</a></td>
                             <td>
+                                @if(!empty($report->link->hash))
+                                    <a href="{{ url($report->link->hash) }}" target="_blank">{{ $report->link->hash }}</a>
+                                @else
+                                    <span class="text-danger">deleted</span>
+                                @endif
+                            </td>
+                            <td>{{ carbon($report->created_at)->longRelativeDiffForHumans() }}</td>
+                            <td>{{ $report->user->username }}</td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-primary"
+                                        data-action="delete"
+                                        data-title="You want to ignore this report?"
+                                        data-url="{{ url('admin/report/ignore/'.$report->id) }}">Ignore
+                                </button>
+
                                 <button type="button" class="btn btn-sm btn-warning"
                                         data-action="delete"
                                         data-title="You want to delete this link?"
-                                        title="Delete"
-                                        data-url="{{ url('admin/link/delete/'.$link->id) }}"><i class="fa fa-trash text-light"></i>
+                                        data-url="{{ url('admin/report/delete/'.$report->id) }}">Delete
                                 </button>
 
                                 <button type="button" class="btn btn-sm btn-danger"
                                         data-action="delete"
                                         data-title="You want to delete and ban this link?"
-                                        title="Delete and Ban"
-                                        data-url="{{ url('admin/link/ban/'.$link->id) }}"><i class="fa fa-ban text-light"></i>
+                                        data-url="{{ url('admin/report/ban/'.$report->id) }}">Ban
                                 </button>
                             </td>
                         </tr>
@@ -67,8 +79,8 @@
             </div>
         </div>
         <div class="card-footer">
-            <div class="d-inline"><strong>Total:</strong> {{ $links->total() }}</div>
-            <div class="d-inline float-right">{{ $links->withQueryString()->links() }}</div>
+            <div class="d-inline"><strong>Total:</strong> {{ $reports->total() }}</div>
+            <div class="d-inline float-right">{{ $reports->withQueryString()->links() }}</div>
         </div>
     </div>
 @endsection

@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Report;
+use App\Services\AnonServices;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -82,6 +84,7 @@ class UpgradeDatabase extends Command
         $path = storage_path("backups/link_reports-database-backup.json");
         $this->restoreDatabase('reports', $path, [], ['link_id' => '']);
         DB::unprepared("UPDATE `reports` SET `dealt_at`=`updated_at`;");
+        $this->fixReports();
 
         $this->info('Database Upgraded Successfully!');
 
@@ -120,6 +123,19 @@ class UpgradeDatabase extends Command
             }
 
             $this->info("$table database restored successfully");
+        }
+    }
+
+    private function fixReports()
+    {
+        $anon = app(AnonServices::class);
+        $reports = Report::all();
+        foreach ($reports as $report) {
+            $link = $anon->findLink($report->url);
+            if ($link) {
+                $report->link_id = $link->id;
+                $report->save();
+            }
         }
     }
 }

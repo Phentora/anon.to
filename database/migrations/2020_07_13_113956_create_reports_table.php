@@ -15,6 +15,7 @@ class CreateReportsTable extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('link_id')->nullable()->index();
             $table->text('url');
             $table->string('email');
             $table->text('comment');

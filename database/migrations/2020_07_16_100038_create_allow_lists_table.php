@@ -15,7 +15,8 @@ class CreateAllowListsTable extends Migration
     {
         Schema::create('allow_lists', function (Blueprint $table) {
             $table->id();
-            $table->text('url_host');
+            $table->text('url_host')->unique();
+            $table->boolean('allow')->default(true);
             $table->text('reason')->nullable();
             $table->timestamps();
         });

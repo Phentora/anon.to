@@ -12,6 +12,7 @@ class Report extends Model
     protected $table = 'reports';
 
     protected $fillable = [
+        'link_id',
         'url',
         'email',
         'comment',
@@ -19,4 +20,9 @@ class Report extends Model
         'created_by',
         'dealt_at',
     ];
+
+    public function link()
+    {
+        return $this->belongsTo(Link::class, 'link_id');
+    }
 }

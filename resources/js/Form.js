@@ -19,12 +19,13 @@ export default class Form {
         });
     }
 
-    static Delete(url) {
+    static Delete(url, title) {
         Swal.fire({
             title: 'Are you sure?',
+            text: title,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.value) {
                 return Axios.delete(url)

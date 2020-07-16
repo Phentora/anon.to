@@ -15,7 +15,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::get('links', 'Admin\LinksAdminController@index');
     Route::get('reports', 'Admin\ReportsAdminController@index');
     Route::get('users', 'Admin\UsersAdminController@index');
-    Route::get('lists/{list}', 'Admin\ListsAdminController@index')->where('list', 'allow|block');
+    Route::get('lists', 'Admin\ListsAdminController@index');
 });
 
 Route::get('/{key}', 'RedirectController@redirect')->where('key', '[A-Za-z0-9]{6}');

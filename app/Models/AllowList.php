@@ -10,6 +10,11 @@ class AllowList extends Model
 
     protected $fillable = [
         'url_host',
+        'allow',
         'reason',
+    ];
+
+    protected $casts = [
+        'allow' => 'boolean',
     ];
 }

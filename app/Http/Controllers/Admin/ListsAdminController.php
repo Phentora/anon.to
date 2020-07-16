@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AllowList;
-use App\Models\BlockList;
 
 class ListsAdminController extends Controller
 {
@@ -12,32 +11,19 @@ class ListsAdminController extends Controller
     {
     }
 
-    public function index($key)
+    public function index()
     {
-        if ($key == 'allow') {
-            return $this->allow();
-        }
-
-        if ($key == 'block') {
-            return $this->block();
-        }
-    }
-
-    public function allow()
-    {
-        meta()->setMeta('Allow List');
+        meta()->setMeta('Allow Lists');
 
         $lists = AllowList::latest();
 
         return view('admin.lists.index', ['lists' => $lists->paginate(100)]);
     }
 
-    public function block()
+    public function add()
     {
-        meta()->setMeta('Block List');
+        $list = new AllowList();
 
-        $lists = BlockList::latest();
-
-        return view('admin.lists.index', ['lists' => $lists->paginate(100)]);
+        return view('admin.lists.edit', ['list' => $list]);
     }
 }

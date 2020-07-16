@@ -14,6 +14,7 @@ document.querySelectorAll('[data-action]').forEach(function (element) {
     let url = element.getAttribute('data-url')
     let action = element.getAttribute('data-action')
     let data = element.getAttribute('data-data')
+    let title = element.getAttribute('data-title')
 
     element.addEventListener('click', function (el) {
         if (action === 'get') {
@@ -23,7 +24,7 @@ document.querySelectorAll('[data-action]').forEach(function (element) {
             return new Form.Post(url, data);
         }
         if (action === 'delete') {
-            return new Form.Delete(url);
+            return new Form.Delete(url, title);
         }
     });
 });
