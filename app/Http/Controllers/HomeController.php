@@ -17,8 +17,6 @@ class HomeController extends Controller
             return app(AnonServices::class)->redirect($url);
         }
 
-//        Cache::put('denylist', BlockList::all()->pluck('url_host')->toArray());
-
         return view('home');
     }
 }
