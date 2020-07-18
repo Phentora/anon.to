@@ -24,12 +24,12 @@
                 <table class="table table-sm table-striped">
                     <thead>
                     <tr>
-                        <th>Username</th>
-                        <th>Email</th>
+                        <th>{!! sort_row(url()->current(), $params, 'username') !!}</th>
+                        <th>{!! sort_row(url()->current(), $params, 'email') !!}</th>
                         <th>{!! sort_row(url()->current(), $params, 'links') !!}</th>
                         <th>Verified</th>
-                        <th style="width: 120px;">Joined</th>
-                        <th style="width: 120px;">Login</th>
+                        <th style="width: 120px;">{!! sort_row(url()->current(), $params, 'joined') !!}</th>
+                        <th style="width: 120px;">{!! sort_row(url()->current(), $params, 'login') !!}</th>
                         <th>&nbsp;</th>
                     </tr>
                     </thead>

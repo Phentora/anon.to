@@ -64,8 +64,17 @@ class UsersAdminController extends Controller
     private function sortUsers($users, $params)
     {
         switch ($params['order']) {
-            case 'added':
+            case 'joined':
                 $users = $users->orderBy('created_at', $params['sort']);
+                break;
+
+            case 'login':
+                $users = $users->orderBy('login_at', $params['sort']);
+                break;
+
+            case 'username':
+            case 'email':
+                $users = $users->orderBy($params['order'], $params['sort']);
                 break;
 
             case 'links':
