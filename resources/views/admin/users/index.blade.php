@@ -26,10 +26,11 @@
                     <tr>
                         <th>Username</th>
                         <th>Email</th>
-                        <th>Links</th>
+                        <th>{!! sort_row(url()->current(), $params, 'links') !!}</th>
                         <th>Verified</th>
                         <th style="width: 120px;">Joined</th>
                         <th style="width: 120px;">Login</th>
+                        <th>&nbsp;</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -37,10 +38,27 @@
                         <tr class="{{ $user->email_verified_at ? '' : 'table-danger' }}">
                             <td>{{ $user->username }}</td>
                             <td>{{ $user->email }}</td>
-                            <td>{{ $user->links_count }}</td>
+                            <td>
+                                {{ $user->links_count }}
+                                @if($user->links_count)
+                                    <a href="{{ url('admin/links?user='.$user->username) }}" title="search links added by {{ $user->username }}"><i class="fa fa-search"></i></a>
+                                @endif
+                            </td>
                             <td>{{ $user->email_verified_at ? 'Yes' : 'No' }}</td>
                             <td>{{ carbon($user->created_at)->longRelativeDiffForHumans() }}</td>
                             <td>{{ $user->login_at ? carbon($user->login_at)->longRelativeDiffForHumans() : '-' }}</td>
+                            <td class="text-right">
+                                <button type="button" class="btn btn-sm btn-warning"
+                                        data-action="delete"
+                                        data-title="You want to delete this user?"
+                                        data-url="{{ url('admin/user/delete/'.$user->id) }}">Delete
+                                </button>
+                                <button type="button" class="btn btn-sm btn-danger"
+                                        data-action="delete"
+                                        data-title="You want to ban this user?"
+                                        data-url="{{ url('admin/user/ban/'.$user->id) }}">Ban
+                                </button>
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>

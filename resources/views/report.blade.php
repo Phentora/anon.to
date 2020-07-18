@@ -12,21 +12,36 @@
                     <div class="form-group row">
                         <label for="url" class="col-sm-2 col-form-label text-sm-right">Link</label>
                         <div class="col-sm-8">
-                            <input type="text" name="url" id="url" class="form-control" placeholder="Paste a Link">
+                            <input type="text" name="url" value="{{ old('url') }}" id="url" class="form-control{{ $errors->has('url') ? ' is-invalid' : '' }}" placeholder="Paste a Link" autofocus>
+                            @error('url')
+                            <div class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </div>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label for="email" class="col-sm-2 col-form-label text-sm-right">Your Email</label>
                         <div class="col-sm-8">
-                            <input type="email" name="email" id="email" class="form-control" placeholder="Your Email Address">
+                            <input type="email" name="email" value="{{ old('email') }}" id="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="Your Email Address">
+                            @error('email')
+                            <div class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </div>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label for="comment" class="col-sm-2 col-form-label text-sm-right">Comment</label>
                         <div class="col-sm-8">
-                            <textarea name="comment" id="comment" rows="5" class="form-control" placeholder="Reason for reporting this link"></textarea>
+                            <textarea name="comment" id="comment" rows="5" class="form-control{{ $errors->has('comment') ? ' is-invalid' : '' }}" placeholder="Reason for reporting this link">{{ old('comment') }}</textarea>
+                            @error('comment')
+                            <div class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </div>
+                            @enderror
                         </div>
                     </div>
 
@@ -34,6 +49,11 @@
                         <div class="col-sm-8 offset-sm-2">
                             @if(env('RECAPTCHA_SITE_KEY'))
                                 <button type="submit" class="btn btn-primary g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Report</button>
+                                @error('g-recaptcha-response')
+                                <div class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </div>
+                                @enderror
                             @else
                                 <button type="submit" class="btn btn-primary">Report</button>
                             @endif

@@ -32,7 +32,7 @@ class ListsAdminController extends Controller
 
         AllowList::create([
             'url_host' => $host,
-            'allow' => (bool) $allow,
+            'allow' => (bool)$allow,
             'reason' => request()->get('reason'),
         ]);
 
@@ -41,7 +41,18 @@ class ListsAdminController extends Controller
         return redirect('admin/lists');
     }
 
-    private function cacheList()
+    public function delete($id)
+    {
+        $list = AllowList::findOrFail($id);
+
+        $list->delete();
+
+        $this->cacheList();
+
+        return response()->json(['message' => 'Host deleted successfully']);
+    }
+
+    public function cacheList()
     {
         Cache::put('allowlist', AllowList::where('allow', 1)->pluck('url_host')->toArray());
         Cache::put('denylist', AllowList::where('allow', 0)->pluck('url_host')->toArray());

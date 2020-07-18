@@ -54,18 +54,18 @@
                             <td>{{ carbon($report->created_at)->longRelativeDiffForHumans() }}</td>
                             <td>{{ $report->user->username }}</td>
                             <td class="text-right">
-                                <button type="button" class="btn btn-sm btn-primary"
-                                        data-action="delete"
-                                        data-title="You want to ignore this report?"
-                                        data-url="{{ url('admin/report/ignore/'.$report->id) }}">Ignore
-                                </button>
-
+                                @if(!$report->dealt_at)
+                                    <button type="button" class="btn btn-sm btn-primary"
+                                            data-action="delete"
+                                            data-title="You want to ignore this report?"
+                                            data-url="{{ url('admin/report/ignore/'.$report->id) }}">Ignore
+                                    </button>
+                                @endif
                                 <button type="button" class="btn btn-sm btn-warning"
                                         data-action="delete"
                                         data-title="You want to delete this link?"
                                         data-url="{{ url('admin/report/delete/'.$report->id) }}">Delete
                                 </button>
-
                                 <button type="button" class="btn btn-sm btn-danger"
                                         data-action="delete"
                                         data-title="You want to delete and ban this link?"

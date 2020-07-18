@@ -14,6 +14,7 @@
                             <input type="text" name="hash" id="search_hash" value="{{ request('hash') }}" class="form-control mr-1" placeholder="Hash">
                             <input type="text" name="host" id="search_host" value="{{ request('host') }}" class="form-control mr-1" placeholder="Host">
                             <input type="text" name="path" id="search_path" value="{{ request('path') }}" class="form-control mr-1" placeholder="Path">
+                            <input type="text" name="user" id="search_user" value="{{ request('user') }}" class="form-control mr-1" placeholder="User">
                             <button type="submit" class="btn btn-primary mr-1"><i class="fa fa-search"></i> Search</button>
                             <a href="{{ url()->current() }}" class="btn btn-warning"><i class="fa fa-sync"></i> Reset</a>
                         </div>
@@ -55,6 +56,13 @@
                             <td>{{ $link->user->username }}</td>
 
                             <td class="text-right">
+                                <button type="button" class="btn btn-sm btn-success"
+                                        data-action="delete"
+                                        data-title="You want to add this host to allow list?"
+                                        title="Add to Allow List"
+                                        data-url="{{ url('admin/link/allow/'.$link->id) }}"><i class="fa fa-check text-light"></i>
+                                </button>
+
                                 <button type="button" class="btn btn-sm btn-warning"
                                         data-action="delete"
                                         data-title="You want to delete this link?"

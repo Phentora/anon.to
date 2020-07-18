@@ -16,6 +16,17 @@
     </header>
     <div class="c-body">
         <main class="c-main">
+            @if($flash_message = session()->get('flash_message'))
+                <div class="container">
+                    <div class="alert alert-{{ $flash_message['type'] }}" role="alert">
+                        {{ $flash_message['message'] }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            @endif
+
             @yield('content')
         </main>
     </div>

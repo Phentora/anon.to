@@ -46,6 +46,13 @@
                             </td>
 
                             <td class="text-right">
+                                <button type="button" class="btn btn-sm btn-success"
+                                        data-action="delete"
+                                        data-title="You want to add this host to allow list?"
+                                        title="Add to Allow List"
+                                        data-url="{{ url('admin/redirect/allow/'.$redirect->id) }}"><i class="fa fa-check text-light"></i>
+                                </button>
+
                                 <button type="button" class="btn btn-sm btn-danger"
                                         data-action="delete"
                                         data-title="You want to delete and ban this link?"

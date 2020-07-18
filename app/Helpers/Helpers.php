@@ -63,7 +63,7 @@ function get_ip()
  *
  * @return bool
  */
-function is_valid_ip($ip, $which = 'ipv4')
+function is_valid_ip($ip, $which = null)
 {
     if ($ip == '0.0.0.0' || $ip == '127.0.0.1') {
         return false;

@@ -56,4 +56,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Link::class, 'created_by');
     }
+
+    public function reports()
+    {
+        return $this->hasMany(Report::class, 'created_by');
+    }
 }
